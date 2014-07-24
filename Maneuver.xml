@@ -4,4 +4,178 @@
 <name>Maneuver: TE</name>
 <version>1.0</version>
 <objective>Take the enemy's wool and place it in your victory monument.</objective>
+<authors>
+    <author contribution="Gameplay, aesthetics, main builder, XML">Crafthappy2000</author>
+</authors>
+<contributors>
+    <contributor contribution="Server host, aesthetics, feedback">adamchenblast23</contributor>
+    <contributor contribution="Aesthetics, feedback">JettStreams</contributor>
+</contributors>
+<teams>
+    <team color="blue" max="12">Blue Team</team>
+    <team color="dark red" max="12">Red Team</team>
+</teams>
+<filters>
+    <filter name="no-void" parents="allow-all">
+        <deny><void/></deny>
+    </filter>
 
+    <filter name="only-blue" parents="deny-players deny-world">
+        <allow><team>blue</team></allow>
+    </filter>
+
+    <filter name="only-red" parents="deny-players deny-world">
+        <allow><team>red</team></allow>
+    </filter>
+    <filter name="only-red-usage">
+        <not>
+            <all>
+                <any>
+                    <block>chest</block>
+                </any>
+                <team>blue</team>
+            </all>
+        </not>
+    </filter>
+    <filter name="only-blue-usage">
+        <not>
+            <all>
+                <any>
+                    <block>chest</block>
+                </any>
+                <team>red</team>
+            </all>
+        </not>
+    </filter>
+</filters>
+<!-- void protection -->
+    <apply block="no-void" message="You may not edit the void area">
+        <negative>
+            <rectangle min="-14,-12" max="15,13"/> MUST EDIT!!!11!!
+            <region name="portals"/>
+        </negative>
+    </apply>
+<!-- portal protections -->
+    <apply block="deny-all">
+        <region name="portals"/>
+    </apply>
+    <apply block="deny-all" message="You may not modify your supply room">
+        <complement name="blue-supplies">
+            <circle center="0.5,91.5" radius="22"/> <!-- circle encompassing the entire base -->
+            <cylinder base="0.5,7,91.5" radius="19" height="8"/> <!-- defines the area where iron can be gotten -->
+        </complement>
+        <complement name="red-supplies">
+            <circle center="0.5,-90.5" radius="22"/> <!-- circle encompassing the entire base -->
+            <cylinder base="0.5,7,-90.5" radius="19" height="8"/> <!-- defines the area where iron can be gotten -->
+        </complement>
+    </apply>
+     <!-- the wools red has to get -->
+    <union name="red-wool-rooms">
+        <circle name="yellow-island" center="-83.5,91.5" radius="11"/>
+        <circle name="purple-island" center="84.5,91.5" radius="11"/>
+        <circle name="cyan-island" center="0.5,175.5" radius="11"/>
+    </union>
+
+    <!-- the wools blue has to get -->
+    <union name="blue-wool-rooms">
+        <circle name="orange-island" center="84.5,-90.5" radius="11"/>
+        <circle name="lime-island" center="-83.5,-90.5" radius="11"/>
+        <circle name="pink-island" center="0.5,-174.5" radius="11"/>
+    </union>
+
+    <!-- the blocks outside of blue's wool rooms -->
+    <complement name="outside-yellow">
+        <circle center="-83.5,91.5" radius="14.9"/>
+        <region name="yellow-island"/>
+    </complement>
+    <complement name="outside-purple">
+        <circle center="84.5,91.5" radius="14.9"/>
+        <region name="purple-island"/>
+    </complement>
+    <complement name="outside-cyan">
+        <circle center="0.5,175.5" radius="14.9"/>
+        <region name="cyan-island"/>
+    </complement>
+
+    <!-- the blocks outside of red's wool rooms -->
+    <complement name="outside-orange">
+        <circle center="84.5,-90.5" radius="14.9"/>
+        <region name="orange-island"/>
+    </complement>
+    <complement name="outside-lime">
+        <circle center="-83.5,-90.5" radius="14.9"/>
+        <region name="lime-island"/>
+    </complement>
+    <complement name="outside-pink">
+        <circle center="0.5,-174.5" radius="14.9"/>
+        <region name="pink-island"/>
+    </complement>
+
+    <!-- wool room rules -->
+    <apply block="only-blue" use="only-blue-usage">
+        <region name="blue-wool-rooms"/>
+    </apply>
+    <apply enter="only-blue" message="You may not enter your own wool room.">
+        <region name="blue-wool-rooms"/>
+    </apply>
+    <apply block="only-red" use="only-red-usage">
+        <region name="red-wool-rooms"/>
+    </apply>
+    <apply enter="only-red" message="You may not enter your own wool room.">
+        <region name="red-wool-rooms"/>
+    </apply>
+
+    <!-- no block placement outside wool rooms -->
+    <apply block="deny-all">
+        <region name="outside-yellow"/>
+        <region name="outside-purple"/>
+        <region name="outside-cyan"/>
+        <region name="outside-orange"/>
+        <region name="outside-lime"/>
+        <region name="outside-pink"/>
+    </apply>
+</regions>
+
+<portals>
+    <!-- portals in red base -->
+    <!-- portal to lower left frontlines -->
+    <portal x="33" y="7">
+        <cuboid min="453,50,404 max=-450,48,404"/>
+    </portal>
+    <portal x="33" y="7">
+        <cuboid min="450,48,404" max="450,50,401"/>
+    </portal>
+     <!-- portal to red wool lane -->
+    <portal x="33" y="7">
+        <cuboid min="464,38,399" max="464,50,395"/>
+    </portal>
+    <!-- portal to lower right frontlines -->
+    <portal x="33" y="7">
+        <cuboid min="450,50,393 max=-450,48,390"/>
+    </portal>
+    <portal x="33" y="7">
+        <cuboid min="450,48,390" max="453,50,390"/>
+    </portal>
+    
+    <!-- portals in red base -->
+    <!-- portal to lower left frontlines -->
+    <portal x="33" y="7">
+        <cuboid min="453,50,404 max=-450,48,404"/>
+    </portal>
+    <portal x="33" y="7">
+        <cuboid min="450,48,404" max="450,50,401"/>
+    </portal>
+     <!-- portal to red wool lane -->
+    <portal x="33" y="7">
+        <cuboid min="464,38,399" max="464,50,395"/>
+    </portal>
+    <!-- portal to lower right frontlines -->
+    <portal x="33" y="7">
+        <cuboid min="450,50,393 max=-450,48,390"/>
+    </portal>
+    <portal x="33" y="7">
+        <cuboid min="450,48,390" max="453,50,390"/>
+    </portal>
+    
+</portals>    
+ 
